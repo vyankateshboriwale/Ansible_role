@@ -1,0 +1,6 @@
+
+---
+# vars file for packer
+
+packer_version: 1.6.0
+packer_zip_url: "https://releases.hashicorp.com/packer/{{ packer_version}}/packer_{{ packer_version }}_linux_amd64.zip"
