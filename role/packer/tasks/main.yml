@@ -11,6 +11,11 @@
   get_url:
     url: "{{ packer_zip_url }}"
     dest: /tmp/packer.zip
+    
+- name: Add the user 'packer'
+  user:
+    name: packer
+    comment: packer
 
 - name: unpack packer
   unarchive:
