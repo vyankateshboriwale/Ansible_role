@@ -3,6 +3,9 @@
 pkg=ansible
 scm=git
 
+echo "##### add adm group ######"
+groupadd adm
+
 echo "##### Install Git #####"
 
  yum install $scm -y
@@ -19,6 +22,7 @@ echo "##### Install Ansible #####"
 echo "##### create a ansible user #####"
  
  adduser $pkg
-
+ usermod -a -G ansible adm
+ 
 
 
