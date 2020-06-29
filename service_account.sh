@@ -18,7 +18,7 @@ gcloud iam service-accounts keys create --iam-account $SERVICE_ACCOUNT_NAME@$PRO
 
 #assign role to newly created service account
 gcloud projects add-iam-policy-binding cicdpipeline --member "serviceAccount:$SERVICE_ACCOUNT_NAME@$PROJECT.iam.gserviceaccount.com" --role "roles/storage.admin"
-
+gcloud projects add-iam-policy-binding cicdpipeline --member "serviceAccount:$SERVICE_ACCOUNT_NAME@$PROJECT.iam.gserviceaccount.com" --role "roles/storage.object.admin"
 #Activate service account for use 
 #gcloud auth activate-service-account --key-file=$SERVICE_ACCOUNT_NAME".json"
 
