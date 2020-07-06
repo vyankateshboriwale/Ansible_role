@@ -1,0 +1,55 @@
+---
+
+- name: Add the user 'docker' with a primary group of 'adm'
+  user:
+    name: docker
+    groups: docker,adm
+    append: yes
+  become: yes
+    
+
+#  yum:
+#    name: "{{item}}"
+#    state: latest
+#  with_items:
+#    - yum-util
+#    - docker-ce-cli 
+#    - containerd.io
+
+- name: Install yum utils
+  yum:
+    name:
+      - yum-utils
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+
+#- name: Install device-mapper-persistent-data
+#  yum:
+#    name: device-mapper-persistent-data
+#    state: latest
+
+#- name: Install lvm2
+#  yum:
+#    name: lvm2
+#    state: latest
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+  become: yes
+
+- name: Install Docker
+  package:
+    name: docker-ce
+    state: latest
+  become: yes
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
