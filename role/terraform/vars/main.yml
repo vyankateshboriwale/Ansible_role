@@ -1,2 +1,6 @@
 ---
 # vars file for terraform
+terraform_version: 0.12.28
+terraform_dir: /opt/terraform/
+terraform_user: terraform
+terraform_env: /opt/terraform/terraform

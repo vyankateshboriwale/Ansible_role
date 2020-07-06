@@ -1,2 +1,35 @@
 ---
-# tasks file for terraform
+# tasks file for terraformi
+
+- name: Create terraform user
+  user:
+    name: "{{terraform_user}}"
+    group: "{{terraform_user}}"
+    groups: adm
+    append: yes
+  become: yes
+
+- name: Create Terraform directory
+  file:
+    path: "{{terraform_dir}}"
+    state: directory
+    owner: "{{terraform_user}}"
+    group: adm
+  become: yes
+
+- name: Download terraform archive Linux 64 bits
+  get_url:
+    url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip
+    dest: /tmp/terraform-{{terraform_version}}.zip
+
+- name: Install unzip to unarchive terraform
+  package:
+    name: unzip
+    state: present
+
+- name: Unarchive Terraform archive
+  unarchive:
+    src: /tmp/terraform-{{terraform_version}}.zip
+    dest: "{{terraform_dir}}"
+    copy: no
+  become: yes 
