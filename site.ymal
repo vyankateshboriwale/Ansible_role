@@ -1,6 +1,13 @@
 ---
 - hosts: localhost
   connection: local
+  gather_facts: no
   roles:
-    - role/packer
-    - role/github
+#    - role/github
+#    - role/docker
+    - role/terraform
+#  environment:
+#    PATH: /opt/terraform/terraform
+#    - role/ansible
+#    - role/packer
+#    - role/kubctl
