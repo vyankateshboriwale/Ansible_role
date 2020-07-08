@@ -1,0 +1,55 @@
+---
+# tasks file for packer
+
+- name: install unzip
+  yum:
+    name: unzip
+    state: present
+  become: yes
+
+- name: Create packer directory
+  file:
+    path: "{{packer_dir}}"
+    state: directory
+    owner: "{{packer_user}}"
+    group: "{{packer_user}}"
+  become: yes
+
+- name: download packer zip
+  get_url:
+    url: "{{ packer_zip_url }}"
+    dest: /tmp/packer.zip
+
+- name: unpack packer
+  unarchive:
+    src: /tmp/packer.zip
+    dest: "{{packer_dir}}"
+    copy: no
+  become: yes
+  
+- name: Add the user 'packer'
+  user:
+    name: "{{packer_user}}"
+    group: "{{packer_user}}"
+    groups: adm
+    append: yes
+  become: yes
+
+- name: Make packer_user packer directory owner
+  file:
+    path: "{{packer_dir}}"
+    state: directory
+    owner: "{{packer_user}}"
+    group: "{{packer_user}}"
+    recurse: yes
+
+- name: Adding packer command to user path
+  file:
+    src: "{{packer_dir}}/packer"
+    dest: "{{packer_dir}}/packer"
+    state: link
+
+- name: remove packer zip
+  file:
+    path: /tmp/packer.zip
+    state: absent

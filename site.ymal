@@ -5,9 +5,7 @@
   roles:
 #    - role/github
 #    - role/docker
-    - role/terraform
-#  environment:
-#    PATH: /opt/terraform/terraform
+#    - role/terraform
 #    - role/ansible
 #    - role/packer
-#    - role/kubctl
+    - role/kubctl

@@ -1,30 +1,52 @@
----
-# tasks file for packer
-
 - name: install unzip
   yum:
     name: unzip
     state: present
   become: yes
 
+- name: Create packer directory
+  file:
+    path: "{{packer_dir}}"
+    state: directory
+  become: yes
+
+- name: Add the user 'packer'
+  user:
+    name: "{{packer_user}}"
+    group: "{{packer_user}}"
+    groups: adm
+    append: yes
+  become: yes
+
 - name: download packer zip
   get_url:
     url: "{{ packer_zip_url }}"
     dest: /tmp/packer.zip
-    
-- name: Add the user 'packer'
-  user:
-    name: packer
-    comment: packer
 
 - name: unpack packer
   unarchive:
     src: /tmp/packer.zip
-    dest: /usr/bin
+    dest: "{{packer_dir}}"
     copy: no
+  become: yes
+
+- name: modify ownership & permissions of a directory recursively
+  file:
+    path: "{{packer_dir}}"
+    state: directory
+    owner: "{{packer_user}}"
+    group: "{{ admin_group }}"
+    mode: 0755
+    recurse: true
   become: yes
 
 - name: remove packer zip
   file:
     path: /tmp/packer.zip
     state: absent
+
+- name: Execute task with extended PATH
+  shell: echo $PATH
+  environment:
+    terraform: /opt/packer/packer
+

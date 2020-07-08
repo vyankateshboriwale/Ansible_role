@@ -5,7 +5,7 @@
   user:
     name: "{{terraform_user}}"
     group: "{{terraform_user}}"
-    groups: adm
+    groups: "{{admin_group }}"
     append: yes
   become: yes
 
@@ -13,8 +13,6 @@
   file:
     path: "{{terraform_dir}}"
     state: directory
-    owner: "{{terraform_user}}"
-    group: adm
   become: yes
 
 - name: Download terraform archive Linux 64 bits
@@ -33,3 +31,18 @@
     dest: "{{terraform_dir}}"
     copy: no
   become: yes 
+
+- name: modify ownership & permissions of a directory recursively
+  file:
+    path: "{{terraform_dir}}"
+    state: directory
+    owner: "{{terraform_user}}"
+    group: "{{ admin_group }}"
+    mode: 0755
+    recurse: true
+  become: yes
+
+- name: Execute task with extended PATH
+  shell: echo $PATH
+  environment:
+    terraform: /opt/terraform/terraform

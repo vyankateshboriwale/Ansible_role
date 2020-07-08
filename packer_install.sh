@@ -6,8 +6,8 @@ user_name="packer"
 
 #Create packer user and add into adm account 
 
-#sudo useradd $user_name
-#sudo usermod -a -G adm $user_name
+sudo useradd $user_name
+sudo usermod -a -G adm $user_name
 
 #echo " $user_name usre is created and added into adm group"
 
